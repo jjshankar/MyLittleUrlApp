@@ -40,7 +40,7 @@ namespace MyLittleUrlApp.ApiHelpers
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                throw ex;
             }
         }
 
@@ -61,7 +61,7 @@ namespace MyLittleUrlApp.ApiHelpers
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                throw ex;
             }
         }
 
@@ -82,7 +82,7 @@ namespace MyLittleUrlApp.ApiHelpers
             }
             catch (Exception ex)
             {
-                return ex.Message;
+                throw ex;
             }
         }
 

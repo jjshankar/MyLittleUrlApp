@@ -27,7 +27,7 @@ namespace MyLittleUrlApp.Controllers
         {
             try
             {
-                if (key?.Length > 0)
+                if(!string.IsNullOrEmpty(key))
                 {
                     string sResult = _apiHelper.GetUrlByKey(key).Result;
                     LittleUrl url = JsonConvert.DeserializeObject<LittleUrl>(sResult);
@@ -36,9 +36,9 @@ namespace MyLittleUrlApp.Controllers
 
                 return View();
             }
-            catch
+            catch (Exception ex)
             {
-                return RedirectToAction("Error");
+                return RedirectToAction("Error", ex.Message);
             }
         }
 
@@ -47,16 +47,16 @@ namespace MyLittleUrlApp.Controllers
         {
             try
             {
-                if (urlToEncode?.Length == 0)
-                    return View();
+                if(string.IsNullOrEmpty(urlToEncode))
+                    return RedirectToAction("Index");
                 
                 string sResult = _apiHelper.CreateNewUrl(urlToEncode).Result;
                 LittleUrl url = JsonConvert.DeserializeObject<LittleUrl>(sResult);
                 return RedirectToAction("Index", new { key = url.ShortUrl });
             }
-            catch
+            catch (Exception ex)
             {
-                return RedirectToAction("Error");
+                return RedirectToAction("Error", new { message = ex.Message });
             }
         }
 
@@ -69,9 +69,9 @@ namespace MyLittleUrlApp.Controllers
                 List<LittleUrl> urlList = JsonConvert.DeserializeObject<List<LittleUrl>>(sResult);
                 return View(urlList);
             }
-            catch
+            catch (Exception ex)
             {
-                return RedirectToAction("Error");
+                return RedirectToAction("Error", new { message = ex.Message });
             }
         }
 
@@ -80,7 +80,7 @@ namespace MyLittleUrlApp.Controllers
         {
             try
             {
-                if (urlkey?.Length > 0)
+                if(!string.IsNullOrEmpty(urlkey))
                 {
                     string sResult = _apiHelper.GetUrlByKey(urlkey).Result;
                     LittleUrl url = JsonConvert.DeserializeObject<LittleUrl>(sResult);
@@ -89,16 +89,16 @@ namespace MyLittleUrlApp.Controllers
 
                 return View();
             }
-            catch
+            catch (Exception ex)
             {
-                return RedirectToAction("Error");
+                return RedirectToAction("Error", new { message = ex.Message });
             }
         }
 
         // Boilerplate
-        public IActionResult Error()
+        public IActionResult Error(string message)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, Message = message });
         }
     }
 }
