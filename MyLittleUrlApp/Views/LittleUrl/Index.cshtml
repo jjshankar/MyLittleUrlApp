@@ -1,0 +1,47 @@
+﻿@model MyLittleUrlApp.Models.LittleUrl
+
+
+@{
+    ViewData["Title"] = "My Little Url";
+}
+
+<h1>My Little Url</h1>
+<hr />
+
+@using (Html.BeginForm("Create", "LittleUrl", FormMethod.Post))
+{
+<div class="form-group">
+    <div class="input-group">
+        <span class="input-group-addon">
+            <i class="glyphicon glyphicon-barcode"></i>
+        </span>
+        <input id="urlToEncode" class="form-control input-lg" name="urlToEncode"
+               placeholder="Encode your URL here" />
+    </div>
+    <div class="row">
+        &nbsp;
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-md-offset-5">
+            <button class="btn btn-default">Encode</button>
+        </div>
+    </div>
+</div>
+}
+
+@if(Model != null)
+{
+<div class="well well-lg">
+    <h2>Your Little Url is:</h2>
+    <div class="input-group">
+        <span class="input-group-addon">
+            <i class="glyphicon glyphicon-link"></i>
+        </span>
+        <input readonly id="urlToDecode" class="form-control input-lg" name="urlToDecode" style="background-color:ghostwhite"
+               value="@Html.DisplayFor(model => model.ShortUrl)" />
+    </div>
+
+
+</div>
+}
+
