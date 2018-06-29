@@ -15,8 +15,9 @@
         <span class="input-group-addon">
             <i class="glyphicon glyphicon-wrench"></i>
         </span>
-        <input id="urlkey" class="form-control input-lg" name="urlkey"
+        <input asp-for="ShortUrl" id="urlkey" class="form-control input-lg" name="urlkey"
                placeholder="Enter Your Little Url here" required />
+        <span asp-validation-for="ShortUrl" class="text-danger"></span>
     </div>
     <div class="row">
         &nbsp;
@@ -29,10 +30,18 @@
 </div>
 }
 
-@if(Model != null)
+@if (ViewData["ErrorMessage"] != null)
+{
+    <div class="well well-sm">
+        <p class="text-danger">@ViewData["ErrorMessage"]</p>
+    </div>
+
+}
+
+@if (Model != null)
 {
 <div class="well well-lg">
-    <h2>Your <i>Not-so-Little</i> Url is:</h2>
+    <h2>Your <i>Not-so-</i>Little Url is:</h2>
     <div class="input-group">
         <span class="input-group-addon">
             <i class="glyphicon glyphicon-link"></i>
@@ -44,4 +53,5 @@
 
 </div>
 }
+
 

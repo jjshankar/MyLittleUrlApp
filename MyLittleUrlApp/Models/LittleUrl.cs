@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace MyLittleUrlApp.Models
 {
     public class LittleUrl
@@ -9,12 +11,14 @@ namespace MyLittleUrlApp.Models
             set;
         }
 
+        [DataType(DataType.Url)]
         public string LongUrl
         {
             get;
             set;
         }
 
+        [StringLength(3, MinimumLength = 3)]
         public string ShortUrl
         {
             get;

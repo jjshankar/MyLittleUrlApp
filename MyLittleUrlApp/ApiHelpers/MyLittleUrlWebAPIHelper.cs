@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -49,15 +50,21 @@ namespace MyLittleUrlApp.ApiHelpers
             try
             {
                 HttpResponseMessage httpResponse = await _httpClient.GetAsync("api/littleurl/" + key);
-                httpResponse.EnsureSuccessStatusCode();
+                //httpResponse.EnsureSuccessStatusCode();
+                if (httpResponse.StatusCode == HttpStatusCode.OK)
+                {
 
-                // LittleUrl newItem = null;
-                // newItem = await httpResponse.Content.ReadAsAsync<LittleUrl>();
-                // return SerializeAsJson(newItem);
+                    // LittleUrl newItem = null;
+                    // newItem = await httpResponse.Content.ReadAsAsync<LittleUrl>();
+                    // return SerializeAsJson(newItem);
 
-                string sRet = await httpResponse.Content.ReadAsStringAsync();
-                return sRet;
-
+                    string sRet = await httpResponse.Content.ReadAsStringAsync();
+                    return sRet;
+                }
+                else
+                {
+                    return String.Empty;   
+                }
             }
             catch (Exception ex)
             {

@@ -83,8 +83,15 @@ namespace MyLittleUrlApp.Controllers
                 if(!string.IsNullOrEmpty(urlkey))
                 {
                     string sResult = _apiHelper.GetUrlByKey(urlkey).Result;
-                    LittleUrl url = JsonConvert.DeserializeObject<LittleUrl>(sResult);
-                    return View(url);
+                    if (!string.IsNullOrEmpty(sResult))
+                    {
+                        LittleUrl url = JsonConvert.DeserializeObject<LittleUrl>(sResult);
+                        return View(url);
+                    }
+                    else
+                    {
+                        ViewData["ErrorMessage"] = "Your Little Url was not found in store.";
+                    }
                 }
 
                 return View();
