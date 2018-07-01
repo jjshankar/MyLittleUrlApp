@@ -18,7 +18,8 @@ namespace MyLittleUrlApp.Models
             set;
         }
 
-        [StringLength(3, MinimumLength = 3)]
+        [DataType(DataType.Text)]
+        [StringLength(3, MinimumLength = 3, ErrorMessage = "Key must be 3 characters in length.")]
         public string ShortUrl
         {
             get;

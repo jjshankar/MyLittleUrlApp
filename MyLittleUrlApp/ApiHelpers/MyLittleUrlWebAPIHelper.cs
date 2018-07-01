@@ -11,11 +11,11 @@ namespace MyLittleUrlApp.ApiHelpers
 {
     public class MyLittleUrlWebAPIHelper
     {
-        private HttpClient _httpClient;
+        private static HttpClient _httpClient;
 
-        public MyLittleUrlWebAPIHelper()
+        public static HttpClient GetApiClient()
         {
-            _httpClient = new HttpClient();
+            HttpClient httpClient = new HttpClient();
 
             // Read from config file
             var configBuilder = new ConfigurationBuilder()
@@ -24,9 +24,17 @@ namespace MyLittleUrlApp.ApiHelpers
 
             string serviceAddressUri = configBuilder.Build().GetValue<string>("ServiceAddressUri");
 
-            _httpClient.BaseAddress = new Uri(serviceAddressUri);
-            _httpClient.DefaultRequestHeaders.Accept.Clear();
-            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.BaseAddress = new Uri(serviceAddressUri);
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            return httpClient;
+        }
+
+        public MyLittleUrlWebAPIHelper()
+        {
+            if(_httpClient == null)
+                _httpClient = GetApiClient();
         }
 
         public async Task<string> GetAllUrls()

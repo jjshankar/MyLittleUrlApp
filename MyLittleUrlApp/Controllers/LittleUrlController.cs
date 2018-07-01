@@ -15,11 +15,17 @@ namespace MyLittleUrlApp.Controllers
 {
     public class LittleUrlController : Controller
     {
-        private MyLittleUrlWebAPIHelper _apiHelper;
+        private static MyLittleUrlWebAPIHelper _apiHelper;
+
+        private static MyLittleUrlWebAPIHelper GetUrlHelper()
+        {
+            return new MyLittleUrlWebAPIHelper();
+        }
 
         public LittleUrlController()
         {
-            _apiHelper = new MyLittleUrlWebAPIHelper();
+            if(_apiHelper == null)
+                _apiHelper = GetUrlHelper();
         }
 
         // GET: /<controller>/

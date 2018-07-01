@@ -5,7 +5,7 @@
     ViewData["Title"] = "My Little Url";
 }
 
-<h1>My Little Url</h1>
+<h1>My Little Url - Retrieve</h1>
 <hr />
 
 @using (Html.BeginForm("Fetch", "LittleUrl", FormMethod.Post))
@@ -17,7 +17,8 @@
         </span>
         <input asp-for="ShortUrl" id="urlkey" class="form-control input-lg" name="urlkey"
                placeholder="Enter Your Little Url here" required />
-        <span asp-validation-for="ShortUrl" class="text-danger"></span>
+        @*<span asp-validation-for="ShortUrl" class="text-danger"></span>*@
+        @*@Html.ValidationMessageFor(Model => Model.ShortUrl)*@
     </div>
     <div class="row">
         &nbsp;
@@ -32,8 +33,8 @@
 
 @if (ViewData["ErrorMessage"] != null)
 {
-    <div class="well well-sm">
-        <p class="text-danger">@ViewData["ErrorMessage"]</p>
+    <div class="well" >
+        <h4 class="text-danger">@ViewData["ErrorMessage"]</h4>
     </div>
 
 }
@@ -42,12 +43,12 @@
 {
 <div class="well well-lg">
     <h2>Your <i>Not-so-</i>Little Url is:</h2>
-    <div class="input-group">
+    <div class=input-group>
         <span class="input-group-addon">
             <i class="glyphicon glyphicon-link"></i>
         </span>
-        <input readonly id="urlDecoded" class="form-control input-lg" name="urlDecoded" style="background-color:ghostwhite"
-               value="@Html.DisplayFor(model => model.LongUrl)" />
+        <span readonly id="urlDecoded" class="form-control input-lg" name="urlDecoded" style="background-color:ghostwhite">
+               @Html.DisplayFor(model => model.LongUrl) </span>
     </div>
 
 
