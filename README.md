@@ -10,6 +10,7 @@ Pre-requisite
 
 Run the MyLittleUrlApi service in its own named container (name=mylittleurlapi)
 * Expose port 80, optionally to localhost for testing
+
 ```
 docker run -d -p 127.0.0.1:32780:80 --name=mylittleurlapi  mylittleurlapi:latest
 ```
