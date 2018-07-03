@@ -15,6 +15,7 @@ docker run -d -p 127.0.0.1:32780:80 --name=mylittleurlapi  mylittleurlapi:latest
 ```
 
 Run the MyLittleUrlApp web application in its own container and use 'old-style' linking to connect the two
+* If using a different name for the API service container, change that in appsettings.json 
 
 ```
 docker run -d -P --name mylittleurlweb --link mylittleurlapi  mylittleurlapp:latest
