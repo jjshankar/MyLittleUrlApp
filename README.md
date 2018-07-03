@@ -32,13 +32,15 @@ docker network create --driver bridge mylittleurl-net
 ```
 
 Attach your containers to this network
-* Optionally map the API service endpoint port out to localhost for testing
+
+1. Start the API service container in the custom network
+    * Optionally map the API service endpoint port out to localhost for testing
 
 ```
-docker run -d -p=127.0.0.1:32780:80 --name=mylittleurlapi  --network=mylittleurl-net mylittleurlapi:latest
+docker run -d -p=127.0.0.1:32780:80 --name=mylittleurlapi --network=mylittleurl-net mylittleurlapi:latest
 ```
 
-
+2. Start the Web app container in this network
 ```
 docker run -d -p=127.0.0.1:32880:80 --name=mylittleurlweb --network=mylittleurl-net  mylittleurlapp:latest
 ```
