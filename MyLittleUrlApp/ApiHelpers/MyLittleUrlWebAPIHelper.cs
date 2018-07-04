@@ -104,7 +104,7 @@ namespace MyLittleUrlApp.ApiHelpers
         private string SerializeAsJson(LittleUrl item)
         {
             return "{ " + String.Format("\"id\": {0}, \"longUrl\": \"{1}\", \"shortUrl\": \"{2}\"",
-                    item.Id, item.LongUrl, item.ShortUrl) + " }";
+                    item.UrlId, item.LongUrl, item.ShortUrl) + " }";
         }
     }
 }
