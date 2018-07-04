@@ -15,5 +15,13 @@ Global
 		{98FB6DC7-A250-4814-89D9-6D079DE859B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98FB6DC7-A250-4814-89D9-6D079DE859B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98FB6DC7-A250-4814-89D9-6D079DE859B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77401406-1B4E-4A59-9F60-42BD45CA211A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77401406-1B4E-4A59-9F60-42BD45CA211A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77401406-1B4E-4A59-9F60-42BD45CA211A}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{77401406-1B4E-4A59-9F60-42BD45CA211A}.Release|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.VersionControlPolicy = $1
 	EndGlobalSection
 EndGlobal
