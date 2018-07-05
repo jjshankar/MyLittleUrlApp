@@ -6,3 +6,8 @@ services:
     build:
       context: .
       dockerfile: MyLittleUrlApp/Dockerfile
+
+networks:
+  default:
+    external:
+      name: mylittleurl-net 
