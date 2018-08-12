@@ -23,6 +23,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.LongUrl)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreationTime)
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -37,6 +40,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LongUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreationTime)
                 </td>
             </tr>
             }

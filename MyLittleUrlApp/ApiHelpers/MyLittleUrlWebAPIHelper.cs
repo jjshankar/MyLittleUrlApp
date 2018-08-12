@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using MyLittleUrlApp.Models;
@@ -49,7 +50,7 @@ namespace MyLittleUrlApp.ApiHelpers
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception(ex.Message, ex.InnerException);
             }
         }
 
@@ -74,9 +75,9 @@ namespace MyLittleUrlApp.ApiHelpers
                     return String.Empty;   
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -86,8 +87,14 @@ namespace MyLittleUrlApp.ApiHelpers
             {
                 LittleUrl newItem = new LittleUrl { LongUrl = longUrl };
                 HttpResponseMessage httpResponse = await _httpClient.PostAsJsonAsync("api/littleurl", newItem);
-                httpResponse.EnsureSuccessStatusCode();
 
+                if (httpResponse.StatusCode == HttpStatusCode.ServiceUnavailable)
+                {
+                    Exception noServiceEx = new Exception(httpResponse.ReasonPhrase);
+                    throw noServiceEx;
+                }
+
+                httpResponse.EnsureSuccessStatusCode();
                 //newItem = await httpResponse.Content.ReadAsAsync<LittleUrl>();
                 //return newItem.ShortUrl;
 
@@ -95,9 +102,9 @@ namespace MyLittleUrlApp.ApiHelpers
                 return sRet;
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 

@@ -1,12 +1,24 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace MyLittleUrlApp.Models
 {
     public class LittleUrl
     {
-        // Object id from data store
-        //public string _id
+        //public class ObjectId
+        //{
+        //    [JsonProperty("creationTime")]
+        //    [Display(Name="Created on (UTC)")]
+        //    public DateTime CreationTime
+        //    { 
+        //        get;
+        //        set;
+        //    }
+        //}
+
+        //// Object id from data store
+        //public ObjectId _id
         //{
         //    get;
         //    set;
@@ -35,5 +47,13 @@ namespace MyLittleUrlApp.Models
             get;
             set;
         }
+
+        [Display(Name="Created on (UTC)")]
+        public DateTime CreationTime
+        { 
+            get;
+            set;
+        }
+
     }
 }

@@ -44,7 +44,8 @@ namespace MyLittleUrlApp.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Error", ex.Message);
+                TempData.Add("ErrorMessage", String.IsNullOrEmpty(ex.InnerException?.Message ?? "") ? ex.Message : ex.InnerException.Message);
+                return RedirectToAction("Error");
             }
         }
 
@@ -62,7 +63,8 @@ namespace MyLittleUrlApp.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Error", new { message = ex.Message });
+                TempData.Add("ErrorMessage", String.IsNullOrEmpty(ex.InnerException?.Message ?? "") ? ex.Message : ex.InnerException.Message);
+                return RedirectToAction("Error");
             }
         }
 
@@ -77,7 +79,8 @@ namespace MyLittleUrlApp.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Error", new { message = ex.Message });
+                TempData.Add("ErrorMessage", String.IsNullOrEmpty(ex.InnerException?.Message ?? "") ? ex.Message : ex.InnerException.Message);
+                return RedirectToAction("Error");
             }
         }
 
@@ -104,13 +107,15 @@ namespace MyLittleUrlApp.Controllers
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Error", new { message = ex.Message });
+                TempData.Add("ErrorMessage", String.IsNullOrEmpty(ex.InnerException?.Message ?? "") ? ex.Message : ex.InnerException.Message);
+                return RedirectToAction("Error");
             }
         }
 
         // Boilerplate
-        public IActionResult Error(string message)
+        public IActionResult Error()
         {
+            string message = TempData["ErrorMessage"].ToString();
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, Message = message });
         }
     }
