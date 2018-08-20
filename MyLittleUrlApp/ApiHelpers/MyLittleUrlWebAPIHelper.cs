@@ -3,7 +3,10 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Security;
 using System.Runtime.ExceptionServices;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using MyLittleUrlApp.Models;
@@ -13,19 +16,37 @@ namespace MyLittleUrlApp.ApiHelpers
     public class MyLittleUrlWebAPIHelper
     {
         private static HttpClient _httpClient;
+        private static string _serviceAddressUri;
 
         public static HttpClient GetApiClient()
         {
-            HttpClient httpClient = new HttpClient();
+            HttpClient httpClient;
 
             // Read from config file
             var configBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json");
 
-            string serviceAddressUri = configBuilder.Build().GetValue<string>("ServiceAddressUri");
+            _serviceAddressUri = configBuilder.Build().GetValue<string>("ServiceAddressUri");
 
-            httpClient.BaseAddress = new Uri(serviceAddressUri);
+            // SSL
+            if (_isSSL && RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                httpClient = new HttpClient(new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                });
+            }
+            else
+            {
+                httpClient = new HttpClient();
+            }
+
+            // Set SecurityProtocols
+            if(_isSSL)
+                System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+
+            httpClient.BaseAddress = new Uri(_serviceAddressUri);
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -34,7 +55,7 @@ namespace MyLittleUrlApp.ApiHelpers
 
         public MyLittleUrlWebAPIHelper()
         {
-            if(_httpClient == null)
+            if (_httpClient == null)
                 _httpClient = GetApiClient();
         }
 
@@ -72,7 +93,7 @@ namespace MyLittleUrlApp.ApiHelpers
                 }
                 else
                 {
-                    return String.Empty;   
+                    return String.Empty;
                 }
             }
             catch (Exception)
@@ -108,10 +129,15 @@ namespace MyLittleUrlApp.ApiHelpers
             }
         }
 
-        private string SerializeAsJson(LittleUrl item)
+        private string _SerializeAsJson(LittleUrl item)
         {
             return "{ " + String.Format("\"id\": {0}, \"longUrl\": \"{1}\", \"shortUrl\": \"{2}\"",
                     item.UrlId, item.LongUrl, item.ShortUrl) + " }";
+        }
+
+        private static bool _isSSL
+        {
+            get => _serviceAddressUri.StartsWith("https", StringComparison.CurrentCultureIgnoreCase);
         }
     }
 }
