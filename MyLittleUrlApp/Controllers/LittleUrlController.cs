@@ -29,6 +29,27 @@ namespace MyLittleUrlApp.Controllers
         }
 
         // GET: /<controller>/
+        public IActionResult Load(string key)
+        {
+            if (!string.IsNullOrEmpty(key))
+            {
+                string sResult = _apiHelper.GetUrlByKey(key).Result;
+                if (!string.IsNullOrEmpty(sResult))
+                {
+                    LittleUrl url = JsonConvert.DeserializeObject<LittleUrl>(sResult);
+                    return Redirect(url.LongUrl);
+                }
+                else
+                {
+                    TempData.Add("ErrorMessage", "Your Little Url was not found in store.");
+                    return RedirectToAction("Error");
+                }
+            }
+                
+            return RedirectToAction("Index");
+        }
+
+        // GET: /<controller>/
         public IActionResult Index(string key = null)
         {
             try

@@ -41,8 +41,15 @@ namespace MyLittleUrlApp
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
+                    name: "littleurl",
                     template: "{controller=LittleUrl}/{action=Index}/{key?}");
+
+                routes.MapRoute(
+                    name: "default",
+                    template: "{key}",
+                    defaults: new {controller = "LittleUrl", action = "Load"}
+                );
+
             });
         }
     }
