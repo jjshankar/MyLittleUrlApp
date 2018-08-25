@@ -57,8 +57,11 @@ namespace MyLittleUrlApp.Controllers
                 if(!string.IsNullOrEmpty(key))
                 {
                     string sResult = _apiHelper.GetUrlByKey(key).Result;
-                    LittleUrl url = JsonConvert.DeserializeObject<LittleUrl>(sResult);
-                    return View(url);
+                    if (!String.IsNullOrEmpty(sResult))
+                    {
+                        TempData["urlResult"] = sResult;
+                        return RedirectToAction("Show");
+                    }
                 }
 
                 return View();
@@ -70,12 +73,35 @@ namespace MyLittleUrlApp.Controllers
             }
         }
 
+        public IActionResult Show()
+        {
+            // Get result from tempData
+            string sResult = (string)TempData["urlResult"];
+            if (!String.IsNullOrEmpty(sResult))
+            {
+                LittleUrl url = JsonConvert.DeserializeObject<LittleUrl>(sResult);
+
+                // Set base address
+                url.BaseAddressPrefix = MyLittleUrlWebAPIHelper.BaseAddressPrefix;
+
+                // set ReductionRate
+                float fVal = 0;
+                if (!String.IsNullOrEmpty(url.LongUrl) && !String.IsNullOrEmpty(url.ShortUrl))
+                    fVal = 100 * (((float)url.LongUrl.Length - (float)(url.BaseAddressPrefix.Length + url.ShortUrl.Length)) / (float)url.LongUrl.Length);
+                TempData["ReductionRate"] = fVal.ToString("0.00");
+
+                return View(url);
+            }
+
+            return RedirectToAction("Index");
+        }
+
         // POST
         public IActionResult Create(string urlToEncode)
         {
             try
             {
-                if(string.IsNullOrEmpty(urlToEncode))
+                if (string.IsNullOrEmpty(urlToEncode))
                     return RedirectToAction("Index");
                 
                 string sResult = _apiHelper.CreateNewUrl(urlToEncode).Result;

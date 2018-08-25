@@ -17,6 +17,7 @@ namespace MyLittleUrlApp.ApiHelpers
     {
         private static HttpClient _httpClient;
         private static string _serviceAddressUri;
+        public static string BaseAddressPrefix;
 
         public static HttpClient GetApiClient()
         {
@@ -28,6 +29,7 @@ namespace MyLittleUrlApp.ApiHelpers
                 .AddJsonFile("appsettings.json");
 
             _serviceAddressUri = configBuilder.Build().GetValue<string>("ServiceAddressUri");
+            BaseAddressPrefix = configBuilder.Build().GetValue<string>("BaseAddressPrefix");
 
             // SSL
             if (_isSSL && RuntimeInformation.IsOSPlatform(OSPlatform.OSX))

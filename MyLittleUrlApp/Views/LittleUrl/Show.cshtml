@@ -1,0 +1,66 @@
+﻿@model MyLittleUrlApp.Models.LittleUrl
+
+@{
+    ViewData["Title"] = "Success";
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            //$('[data-toggle="popover"]').popover(); 
+            $("#copyMessage").hide();
+            $("#btnCopy").click(function () {
+                $("#urlToDecode").select();
+                if(document.execCommand("copy"))
+                    $("#copyMessage").slideDown(100).delay(2000).slideUp(500);
+            });
+        });
+
+        $('#copyMessage .close').click(function () {
+            $(this).parent().hide();
+        });
+    </script>
+}
+
+<h1>Success!</h1>
+
+
+@if (Model != null)
+{
+    <div class="input-group">
+        <h2>Your Long Url:</h2>
+        <h3>@Model.LongUrl</h3>
+    </div>
+
+    <div class="row">
+        &nbsp;
+    </div>
+
+    <div class="well well-lg">
+        <h2>Your Little Url is: <small>(@TempData["ReductionRate"]% shorter)</small></h2>
+        <div class="input-group">
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-link" title="Click to copy" style="cursor:pointer" id="btnCopy"></i>
+            </span>
+            @{
+                string sFullUrl = String.Concat(Model.BaseAddressPrefix, Model.ShortUrl);
+            }
+            <input readonly id="urlToDecode" class="form-control input-lg" name="urlToDecode" style="background-color:ghostwhite"
+                   @*data-toggle="popover" title="Popover Header" data-content="Some content inside the popover"*@
+                   value=@Html.DisplayFor(item => sFullUrl) />
+        </div>
+        <div id="copyMessage" class="alert alert-success">
+            @*<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>*@
+            <strong>Copied</strong> to clipboard.
+        </div>
+    </div>
+    <div class="row">
+        &nbsp;
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-md-offset-5">
+            <a asp-area="" asp-controller="LittleUrl" asp-action="Index" class="btn btn-default">Return</a>
+        </div>
+    </div>
+}
+

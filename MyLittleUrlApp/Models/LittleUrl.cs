@@ -55,5 +55,10 @@ namespace MyLittleUrlApp.Models
             set;
         }
 
+        public string BaseAddressPrefix
+        {
+            get;
+            set;
+        }
     }
 }

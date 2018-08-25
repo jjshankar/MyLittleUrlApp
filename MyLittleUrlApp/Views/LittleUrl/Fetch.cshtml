@@ -39,20 +39,19 @@
 
 }
 
-@if (Model != null)
-{
-<div class="well well-lg">
+<div class="well well-lg" @(Model == null? "hidden" : "")>
     <h2>Your <i>Not-so-</i>Little Url is:</h2>
     <div class=input-group>
         <span class="input-group-addon">
             <i class="glyphicon glyphicon-link"></i>
         </span>
-        <span readonly id="urlDecoded" class="form-control input-lg" name="urlDecoded" style="background-color:ghostwhite">
-               @Html.DisplayFor(model => model.LongUrl) </span>
+        <span readonly id="urlDecodedSpn" class="form-control input-lg" name="urlDecoded" style="background-color:ghostwhite">
+            @Html.DisplayFor(model => model.LongUrl)
+        </span>                
     </div>
 
 
 </div>
-}
+
 
 
