@@ -105,6 +105,12 @@ namespace MyLittleUrlApp.Controllers
                 if (string.IsNullOrEmpty(urlToEncode))
                     return RedirectToAction("Index");
                 
+                if (urlToEncode.StartsWith(MyLittleUrlWebAPIHelper.BaseAddressPrefix, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    TempData.Add("ErrorMessage", "Invalid attempt.  This is already a LittleURL.");
+                    return RedirectToAction("Error");
+                }
+                   
                 string sResult = _apiHelper.CreateNewUrl(urlToEncode).Result;
                 LittleUrl url = JsonConvert.DeserializeObject<LittleUrl>(sResult);
                 return RedirectToAction("Index", new { key = url.ShortUrl });

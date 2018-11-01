@@ -5,15 +5,24 @@
     ViewData["Title"] = "My Little Url";
 }
 
+@section Scripts {
+<script>
+function clearForm() {
+        $('#urlForm').trigger('reset');
+        $('#divAddResult').hide();
+}
+</script>
+}
+
 <h1>@ViewData["Title"]</h1>
 <hr />
 
-@using (Html.BeginForm("Create", "LittleUrl", FormMethod.Post, new { id = "urlForm" }))
+@using(Html.BeginForm("Create", "LittleUrl", FormMethod.Post, new { id = "urlForm" }))
 {
     <div class="form-group">
         <div class="input-group">
             <span class="input-group-addon">
-                <i class="glyphicon glyphicon-barcode" title="Clear form" style="cursor:pointer" onclick="ClearForm()"></i>
+                <i class="glyphicon glyphicon-barcode" title="Clear form" style="cursor:pointer" onclick="clearForm()"></i>
             </span>
             <input asp-for="LongUrl" id="urlToEncode" class="form-control input-lg" name="urlToEncode"
                    placeholder="Encode your URL here" required />
@@ -32,7 +41,7 @@
 
 @if (Model != null)
 {
-    <div class="well well-lg">
+    <div class="well well-lg" id="divAddResult">
         <h2>Your Little Url is:</h2>
         <div class="input-group">
             <span class="input-group-addon">

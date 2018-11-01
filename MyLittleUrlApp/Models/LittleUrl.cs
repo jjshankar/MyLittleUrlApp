@@ -33,6 +33,7 @@ namespace MyLittleUrlApp.Models
 
         [DataType(DataType.Url)]
         [Display(Name="Long Url")]
+        [UIHint("MyLittleUrlDisplay")]
         public string LongUrl
         {
             get;

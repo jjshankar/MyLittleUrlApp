@@ -3,21 +3,24 @@
     ViewData["Title"] = "Error";
 }
 
-<h1 class="text-danger">Error.</h1>
+<h1 class="text-danger">@ViewData["Title"]</h1>
 @*<h2 class="text-danger">An error occurred while processing your request.</h2>*@
 
 @if (Model.ShowMessage)
-{ 
+{
     <p>&nbsp;</p>
     @*<h3 class="text-danger">The application returned the following message:</h3>*@
     <div class="well well-lg">
         <h3>
-            <strong>@Model.Message</strong>
+            @if (Model.Message != null && Model.Message.Length > 0)
+            {
+                    <strong>@Model.Message</strong>
+            }
+            else if(TempData["ErrorMessage"] != null)
+            {
+                    <strong>@TempData["ErrorMessage"]</strong>
+            }
         </h3>
-        @if (TempData["ErrorMessage"] != null)
-        {
-            <p>@TempData["ErrorMessage"]</p>
-        }
     </div>
 }
 
