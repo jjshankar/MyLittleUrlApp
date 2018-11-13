@@ -122,6 +122,75 @@ namespace MyLittleUrlApp.Controllers
             }
         }
 
+        // DELETE
+        public IActionResult Delete(string urlKey)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(urlKey))
+                {
+                    string sResult = _apiHelper.Delete(urlKey).Result;
+                    if (!string.IsNullOrEmpty(sResult))
+                    {
+                        if (sResult.StartsWith("{", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            LittleUrl url = JsonConvert.DeserializeObject<LittleUrl>(sResult);
+                            if (url != null && url.ShortUrl == urlKey)
+                                return RedirectToAction("List");
+                        }
+                        else
+                        {
+                            TempData["ErrorMessage"] = sResult;
+                        }
+                    }
+                }
+                else
+                    TempData["ErrorMessage"] = "Invalid or empty Little Url.";
+
+                return RedirectToAction("Error");
+            }
+            catch (Exception ex)
+            {
+                TempData.Add("ErrorMessage", String.IsNullOrEmpty(ex.InnerException?.Message ?? "") ? ex.Message : ex.InnerException.Message);
+                return RedirectToAction("Error");
+            }
+        }
+
+        // UNDELETE
+        [HttpPost]
+        public IActionResult Undelete(string urlKey)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(urlKey))
+                {
+                    string sResult = _apiHelper.Undelete(urlKey).Result;
+                    if (!string.IsNullOrEmpty(sResult))
+                    {
+                        if (sResult.StartsWith("{", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            LittleUrl url = JsonConvert.DeserializeObject<LittleUrl>(sResult);
+                            if (url != null && url.ShortUrl == urlKey)
+                                return RedirectToAction("List");
+                        }
+                        else
+                        {
+                            TempData["ErrorMessage"] = sResult;
+                        }
+                    }
+                }
+                else
+                    TempData["ErrorMessage"] = "Invalid or empty Little Url.";
+
+                return RedirectToAction("Error");
+            }
+            catch (Exception ex)
+            {
+                TempData.Add("ErrorMessage", String.IsNullOrEmpty(ex.InnerException?.Message ?? "") ? ex.Message : ex.InnerException.Message);
+                return RedirectToAction("Error");
+            }
+        }
+
         // GET
         [Authorize]
         public IActionResult List()

@@ -61,5 +61,29 @@ namespace MyLittleUrlApp.Models
             get;
             set;
         }
+
+        public bool IsDeleted
+        {
+            get;
+            set;
+        }
+
+        public DateTime LastAccessedTime
+        {
+            get;
+            set;
+        }
+
+        public DateTime DeletedTime
+        {
+            get;
+            set;
+        }
+
+        public DateTime PurgeDate
+        {
+            get;
+            set;
+        }
     }
 }

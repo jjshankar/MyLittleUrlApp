@@ -5,6 +5,51 @@
     ViewData["Title"] = "My Little Url";
 }
 
+@section Scripts {
+<script>
+$(document).ready(function() {
+    $("tr").dblclick(function() {
+        var id = this.id;
+        // $("#btnDiv_" + id).slideDown(500).delay(2000).slideUp(500);
+        $("#btnDiv_" + id).slideToggle(500).delay(2000); //.slideToggle(500);
+        $("#dataDiv_" + id).slideToggle(500).delay(2000); //.slideToggle(500);
+    });
+
+    $("span").mouseout(function() {
+        var id = this.parentElement.id;
+        if(id.startsWith('btnDiv_') || id.startsWith('dataDiv_'))
+        {
+            id = id.slice(id.search("_")+1);
+            $("#btnDiv_"+id).slideUp(500); //.delay(2000); //.slideToggle(500);
+            $("#dataDiv_"+id).slideUp(500); //.delay(2000); //.slideToggle(500);
+        }
+    });
+/**/
+    @*$("#form_delUrl").submit((event) => {
+        debugger;
+        event.preventDefault();
+        var $form = $(this);
+        $.ajax({
+            type: $form.prop('method'),
+            url: $form.prop('action') + '/' + $("#txt_delUrl").val(),
+            success: function(response) {
+                alert(response.data + 'deleted!');
+            });
+        });
+    });*@
+/**/
+    
+    $("button").click(function() {
+        $("#txt_delUrl").val(this.attributes['extradata'].nodeValue);
+        $("#form_delUrl").show();
+        $("#form_delUrl").submit();
+
+        });
+});
+    
+</script>
+}
+
 <h1>My Little Url</h1>
 <hr />
 
@@ -23,7 +68,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.LongUrl)
                 </th>
-                <th>
+                <th style="text-align:center">
                     @Html.DisplayNameFor(model => model.CreationTime)
                 </th>
             </tr>
@@ -31,20 +76,95 @@
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UrlId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ShortUrl)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LongUrl)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreationTime)
-                </td>
-            </tr>
+                string surl = item.ShortUrl;
+                <tr id="@surl">
+                    <td>
+                        @if (item.IsDeleted) {
+                            <div style="font-style:italic; text-decoration:line-through"> 
+                                @Html.DisplayFor(modelItem => item.UrlId)
+                            </div>
+                        }
+                        else {
+                            <div>
+                                @Html.DisplayFor(modelItem => item.UrlId)
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsDeleted) {
+                            <div style="font-style:italic; text-decoration:line-through"> 
+                                @Html.DisplayFor(modelItem => item.ShortUrl)
+                            </div>
+                        }
+                        else {
+                            <div>
+                                @Html.DisplayFor(modelItem => item.ShortUrl)
+                            </div> 
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsDeleted) {
+                            <div style="font-style:italic; text-decoration:line-through"> 
+                                @Html.DisplayFor(modelItem => item.LongUrl)
+                            </div>
+                            <div id="dataDiv_@surl" style="text-align:right; font-style:italic; display:none; position:relative; right:0px">
+                                <span>
+                                    Deleted on: @Html.DisplayFor(modelItem => item.DeletedTime) <br/>
+                                    Will be purged on: @Html.DisplayFor(modelItem => item.PurgeDate) 
+                                </span>
+                            </div>
+                        }
+                        else {
+                            <div> 
+                                @Html.DisplayFor(modelItem => item.LongUrl)
+                            </div>
+                            <div id="dataDiv_@surl" style="text-align:right; font-style:italic; display:none; position:relative; right:0px">
+                                @if(item.LastAccessedTime == DateTime.MinValue) {
+                                    <span>Last accessed on: Never</span>
+                                }
+                                else {
+                                    <span>Last accessed on: @Html.DisplayFor(modelItem => item.LastAccessedTime)</span>
+                                }
+                            </div>
+                        }
+
+                    </td>
+                    <td align="right">
+                        @if (item.IsDeleted) {
+                            <div style="font-style: italic; text-decoration: line-through"> 
+                                @Html.DisplayFor(modelItem => item.CreationTime)   
+                            </div>
+                        }
+                        else {
+                            <div>
+                                @Html.DisplayFor(modelItem => item.CreationTime) 
+                            </div>   
+                        }
+                        
+                        @if (item.IsDeleted) {
+                            @using (Html.BeginForm("Undelete", "LittleUrl", FormMethod.Post))
+                            {
+                                @Html.Hidden("urlKey", item.ShortUrl)
+                                <div id="btnDiv_@surl" style="align:right; display:none; position:relative; right:0px">
+                                    <span>
+                                    <button class="btn btn-success" id="btn_@surl" type="submit">Restore</button>
+                                    </span>
+                                </div>
+                            }
+                        }
+                        else {
+                            @using (Html.BeginForm("Delete", "LittleUrl", FormMethod.Post))
+                            {
+                                @Html.Hidden("urlKey", item.ShortUrl)
+                                <div id="btnDiv_@surl" style="align:right; display:none; position:relative; right:0px">
+                                    <span>
+                                    <button class="btn btn-danger" id="btn_@surl" type="submit">Delete</button>
+                                    </span>
+                                </div>
+                            }
+                        }
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

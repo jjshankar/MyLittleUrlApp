@@ -131,6 +131,42 @@ namespace MyLittleUrlApp.ApiHelpers
             }
         }
 
+        public async Task<string> Delete(string key)
+        {
+            try
+            {
+                HttpResponseMessage httpResponse = await _httpClient.DeleteAsync("api/littleurl/" + key);
+                string sRet = await httpResponse.Content.ReadAsStringAsync();
+                if (!String.IsNullOrEmpty(sRet))
+                    return sRet;
+
+                // Return HTTP Reason message
+                return httpResponse.ReasonPhrase;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> Undelete(string key)
+        {
+            try
+            {
+                HttpResponseMessage httpResponse = await _httpClient.PostAsync("api/littleurl/" + key, null);
+                string sRet = await httpResponse.Content.ReadAsStringAsync();
+                if (!String.IsNullOrEmpty(sRet))
+                    return sRet;
+
+                // Return HTTP Reason message
+                return httpResponse.ReasonPhrase;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         private string _SerializeAsJson(LittleUrl item)
         {
             return "{ " + String.Format("\"id\": {0}, \"longUrl\": \"{1}\", \"shortUrl\": \"{2}\"",
