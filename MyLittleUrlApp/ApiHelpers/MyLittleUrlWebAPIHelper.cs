@@ -26,7 +26,8 @@ namespace MyLittleUrlApp.ApiHelpers
             // Read from config file
             var configBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
+                .AddJsonFile("appsettings.json")
+                .AddEnvironmentVariables();
 
             _serviceAddressUri = configBuilder.Build().GetValue<string>("ServiceAddressUri");
             BaseAddressPrefix = configBuilder.Build().GetValue<string>("BaseAddressPrefix");
