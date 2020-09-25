@@ -52,6 +52,7 @@ namespace MyLittleUrlApp.ApiHelpers
             httpClient.BaseAddress = new Uri(_serviceAddressUri);
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            httpClient.DefaultRequestHeaders.Add("Client-Secret", configBuilder.Build().GetValue<string>("ClientSecret"));
 
             return httpClient;
         }
