@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "My Little Url";
+    DateTime AzureMinDate  = new DateTime(1601, 1, 1);
 }
 
 @section Scripts {
@@ -119,7 +120,7 @@ $(document).ready(function() {
                                 @Html.DisplayFor(modelItem => item.LongUrl)
                             </div>
                             <div id="dataDiv_@surl" style="text-align:right; font-style:italic; display:none; position:relative; right:0px">
-                                @if(item.LastAccessedTime == DateTime.MinValue) {
+                                @if(item.LastAccessedTime == AzureMinDate) {
                                     <span>Last accessed on: Never</span>
                                 }
                                 else {

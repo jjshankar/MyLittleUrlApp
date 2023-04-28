@@ -127,9 +127,9 @@ namespace MyLittleUrlApp.ApiHelpers
                 return sRet;
 
             }
-            catch (Exception)
+            catch (Exception x)
             {
-                throw;
+                throw x;
             }
         }
 
