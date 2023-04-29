@@ -120,9 +120,8 @@ $(document).ready(function() {
                                 @Html.DisplayFor(modelItem => item.LongUrl)
                             </div>
                             <div id="dataDiv_@surl" style="text-align:right; font-style:italic; display:none; position:relative; right:0px">
-                                @
-                                // Min Date supported by Azure tables is 1/1/1601
-                                if(item.LastAccessedTime == DateTime.MinValue || item.LastAccessedTime == AzureMinDate) {
+                                @if(item.LastAccessedTime == DateTime.MinValue || item.LastAccessedTime == AzureMinDate) {
+                                    // Min Date supported by Azure tables is 1/1/1601
                                     <span>Last accessed on: Never</span>
                                 }
                                 else {
